@@ -6,9 +6,8 @@ Prerequisitos:
 * Docker Engine.
 
 # Como probar
-
-### Construir con Gradle
-Para construir con gradle `./gradlew bootRun`.
+### Gradle
+Para ejecutar con gradle `./gradlew bootRun`.
 
 ### Docker
 Para iniciar la construccion usar el shell script `sh local.sh`.
