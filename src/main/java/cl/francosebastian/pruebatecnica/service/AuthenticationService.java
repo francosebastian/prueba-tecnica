@@ -7,7 +7,6 @@ import cl.francosebastian.pruebatecnica.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -20,7 +19,6 @@ import java.time.LocalDateTime;
 public class AuthenticationService {
 
     private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
     private final JwtService jwtService;
 
@@ -31,12 +29,12 @@ public class AuthenticationService {
     public UserEntity authenticate(LoginDTO input) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
-                        input.getEmail(),
-                        input.getPassword()
+                        input.getCorreo(),
+                        input.getContrasena()
                 )
         );
 
-        UserEntity user = userRepository.findByCorreo(input.getEmail())
+        UserEntity user = userRepository.findByCorreo(input.getCorreo())
                 .orElseThrow();
         user.setUltimoLogin(LocalDateTime.now());
         user.setToken(jwtService.generateToken(new CustomUserDetails(user)));

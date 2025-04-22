@@ -1,9 +1,6 @@
 package cl.francosebastian.pruebatecnica.entity;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,6 +10,7 @@ import java.util.List;
 @Entity
 @Setter
 @Getter
+@Table(name="users")
 public class UserEntity extends AutoincrementEntity {
 
     @Column(unique = true)

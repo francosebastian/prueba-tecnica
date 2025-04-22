@@ -6,6 +6,8 @@ import cl.francosebastian.pruebatecnica.dto.PhoneDTO;
 import cl.francosebastian.pruebatecnica.dto.UserDTO;
 import cl.francosebastian.pruebatecnica.entity.PhoneEntity;
 import cl.francosebastian.pruebatecnica.entity.UserEntity;
+import cl.francosebastian.pruebatecnica.exception.EmailException;
+import cl.francosebastian.pruebatecnica.exception.PasswordException;
 import cl.francosebastian.pruebatecnica.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -65,12 +67,12 @@ public class UserService {
         if(!Pattern.compile(EMAIL_REGEX)
                 .matcher(usuarioDTO.getCorreo())
                 .matches())
-            throw new RuntimeException("Correo no valido");
+            throw new EmailException("Correo no valido");
 
         if(!Pattern.compile(passwordRegex)
                 .matcher(usuarioDTO.getContrasena())
                 .matches())
-            throw new RuntimeException("Password no valido");
+            throw new PasswordException("Password no valido");
 
         UserEntity user = new UserEntity();
         user.setPassword(passwordEncoder.encode(usuarioDTO.getContrasena()));
@@ -146,8 +148,6 @@ public class UserService {
                     .build();
             telefonos.add(phoneDTO);
         }
-
-
         usuarioDTO.setTelefonos(telefonos);
 
         return usuarioDTO;

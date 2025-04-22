@@ -1,4 +1,4 @@
-package cl.francosebastian.pruebatecnica.handler;
+package cl.francosebastian.pruebatecnica.exception;
 
 import cl.francosebastian.pruebatecnica.dto.ErrorMessageDTO;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -6,6 +6,7 @@ import io.jsonwebtoken.MalformedJwtException;
 import io.swagger.v3.oas.annotations.Hidden;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
@@ -38,6 +39,26 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
     /**
      * SpringSecurityException type
      */
+    @ExceptionHandler(EmailException.class)
+    public ResponseEntity<ErrorMessageDTO> emailException(HttpServletRequest req,
+                                                                         EmailException ex) {
+        log.error("Error capturado EmailException : ", ex);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ErrorMessageDTO.builder().mensaje("Email no valido").build());
+    }
+
+    /**
+     * SpringSecurityException type
+     */
+    @ExceptionHandler(PasswordException.class)
+    public ResponseEntity<ErrorMessageDTO> passwordException(HttpServletRequest req,
+                                                          PasswordException ex) {
+        log.error("Error capturado PasswordException : ", ex);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ErrorMessageDTO.builder().mensaje("Password no cumple politica de seguridad.").build());
+    }
+
+    /**
+     * SpringSecurityException type
+     */
     @ExceptionHandler(AccessDeniedException.class)
     public ResponseEntity<ErrorMessageDTO> handleAccessDeniedException(HttpServletRequest req,
                                                                      AccessDeniedException ex) {
@@ -54,6 +75,17 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
         log.error("Error capturado AuthenticationException : ", ex);
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ErrorMessageDTO.builder().mensaje("No autorizado").build());
     }
+
+    /**
+     * SpringSecurityException type
+     */
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity<ErrorMessageDTO> handleConstraintViolationException(HttpServletRequest req,
+                                                                              DataIntegrityViolationException ex) {
+        log.error("Error capturado DataIntegrityViolationException : ", ex);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ErrorMessageDTO.builder().mensaje("Email ya existe en la DB").build());
+    }
+
 
     /**
      * JwtException type
