@@ -1,0 +1,7 @@
+services:
+  prueba-tecnica-franco-backend:
+    image: prueba-tecnica:latest
+    container_name: prueba-tecnica
+    restart: no
+    ports:
+      - 8080:8080
